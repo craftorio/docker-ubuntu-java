@@ -15,6 +15,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 && apt-get -qqy install oracle-java8-installer python-dateutil \
 && locale-gen ru_RU && locale-gen ru_RU.UTF-8 && dpkg-reconfigure locales \
 && rm -rf /var/lib/{apt,cache,log}/ \
-&& echo 'JAVA_HOME="/usr/lib/jvm/java-8-oracle"' >> /etc/environment
+&& echo 'JAVA_HOME="/usr/lib/jvm/java-8-oracle"' >> /etc/environment \
+&& apt-get -qqy autoclean
 
 CMD ["/sbin/my_init"]
