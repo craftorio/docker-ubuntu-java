@@ -1,0 +1,21 @@
+# Using Ubuntu base image modified for Docker-friendliness
+# https://github.com/phusion/baseimage-docker
+FROM phusion/baseimage:bionic-1.0.0
+
+ENV TERM=xterm
+ENV LANG=ru_RU.UTF-8
+
+RUN export DEBIAN_FRONTEND=noninteractive \
+&& apt-get -qqy update \
+&& apt-get -qqy install software-properties-common python-dateutil \
+screen wget curl vim mysql-client zip unzip bzip2 \
+&& apt-get -qqy autoclean && rm -rf /var/lib/{apt,cache,log}/
+
+RUN locale-gen ru_RU && locale-gen ru_RU.UTF-8 && dpkg-reconfigure locales
+RUN apt-get -qqy update && apt-get install -qqy libasound2-dev libc6-i386 libc6-x32 libfreetype6 libx11-6 libxext6 libxi6 libxrender1 libxtst6 \
+&& apt-get -qqy autoclean && rm -rf /var/lib/{apt,cache,log}/ 
+
+ADD jdk /jdk
+RUN dpkg -i /jdk/jdk-18_*.deb
+
+CMD ["/sbin/my_init"]
